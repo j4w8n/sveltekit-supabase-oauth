@@ -11,31 +11,31 @@
   import { session } from '$app/stores'
   import { goto } from '$app/navigation'
   import { supabase, signIn, signOut } from '$lib/supabase'
+  import { pages, loadPages } from '../stores/pages'
   export let user
 
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
-      const body = JSON.stringify(
-        {
-          access_token: sesh.access_token,
-          avatar_url: sesh.user.user_metadata.avatar_url,
-          expires_at: sesh.expires_at,
-          id: sesh.user.id
-        }
-      )
+      // set cookie
       await fetch('/api/cookie', {
         method: 'POST',
-        body
+        body: JSON.stringify(sesh)
       })
       .then((res) => {
         if (res.status === 200) {
+          // hydrate page data
+          loadPages()
+
           // hydrate the sveltekit session store with data returned from supabase session
           $session = {
-            access_token: sesh.access_token,
-            avatar_url: sesh.user.user_metadata.avatar_url,
-            id: sesh.user.id
+            user: {
+              user_metadata: {
+                avatar_url: sesh.user.user_metadata.avatar_url
+              }
+            }
           }
-          // fixes trailing hash issue with link-and-back navigation
+
+          // fixes trailing hash issue with linkclick-and-backbutton navigation
           goto('/')
         } else {
           console.error('Failed to set cookie', res)
@@ -56,8 +56,12 @@
         method: 'DELETE'
       })
       .then((res) => {
-        if (res.status !== 204) console.error('failed to expire cookie', res)
+        if (res.status !== 204) {
+          console.error('failed to expire cookie', res)
+        }
+        pages.set([])
         $session = false
+        goto('/')
       })
 
       /*
@@ -73,7 +77,7 @@
   Navbar
   <a href="/">Home</a>
   {#if user}
-  <img style="width: 32px; height: 32px; border-radius: 9999px;" src={user.avatar_url} alt="person_avatar">
+  <img style="width: 32px; height: 32px; border-radius: 9999px;" src={user.user.user_metadata.avatar_url} alt="person_avatar">
   <button on:click={() => {signOut()}}>Logout</button>
   {:else}
   <button on:click={() => {signIn('github')}}>Github Login</button>
