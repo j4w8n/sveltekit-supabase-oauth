@@ -21,14 +21,17 @@
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
       // set cookie
-      await fetch('/api/cookie', {
+      fetch('/api/cookie', {
         method: 'POST',
         body: JSON.stringify(sesh)
       })
-      .then((res) => {
+      .then(async (res) => {
         if (res.status === 200) {
-          // hydrate our page array
-          loadPages()
+          /*
+          ** hydrate our page array, only needed if we're staying on the current page.
+          ** example, we logged in from `/`, and after login we're staying on `/`
+          */
+          //loadPages()
 
           /* 
           ** hydrate the sveltekit session store with data returned from supabase session.
@@ -49,7 +52,9 @@
           ** then if you click to another route, say /app, everything works
           ** but if you then click the browser's back button, the url changes but /app's content is still visible
           */
-          goto('/')
+          goto('/app', {
+            replaceState: true
+          })
         } else {
           console.error('Failed to set cookie', res)
           if (supabase.auth.session()) {
@@ -65,7 +70,7 @@
       */
 
     } else if (event === 'SIGNED_OUT') {
-      await fetch('/api/cookie', {
+      fetch('/api/cookie', {
         method: 'DELETE'
       })
       .then((res) => {
@@ -74,7 +79,6 @@
         }
         pages.set([])
         $session = false
-        goto('/')
       })
 
       /*
@@ -91,7 +95,12 @@
   <a href="/">Home</a>
   {#if user}
   <img style="width: 32px; height: 32px; border-radius: 9999px;" src={user.user.user_metadata.avatar_url} alt="person_avatar">
-  <button on:click={() => {signOut()}}>Logout</button>
+  <button on:click={async () => {
+    const signedOut = await signOut()
+    if (signedOut) {
+      window.location.replace('/')
+    }
+  }}>Logout</button>
   {:else}
   <button on:click={() => {signIn('github')}}>Github Login</button>
   {/if}

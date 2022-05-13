@@ -19,7 +19,7 @@ export const post = async (event) => {
     }
   }
 }
-export const del = async (event) => {
+export const del = (event) => {
   event.locals.user = null
   return {
     status: 204,

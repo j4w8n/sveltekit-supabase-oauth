@@ -17,7 +17,11 @@ export const signIn = async (provider) => {
 export const signOut = async () => {
   try {
     const { error } = await supabase.auth.signOut()
-    if (error) console.error(error)
+    if (error) {
+      console.error(error)
+      return false
+    }
+    return true
   } catch (error) {
     console.error(error)
   }

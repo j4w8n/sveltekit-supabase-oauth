@@ -1,6 +1,7 @@
 <script>
-  import { pages } from '../stores/pages'
+import { pages } from '../../stores/pages'
   export let svrPages = []
+
   $: $pages = svrPages
 </script>
 
