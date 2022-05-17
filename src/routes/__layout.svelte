@@ -56,7 +56,7 @@
           ** then if you click to another route, say /app, everything works
           ** but if you then click the browser's back button, the url changes but /app's content is still visible
           */
-          goto('/app', {
+          goto('/', {
             // replaceState is optional here. it removes the `/#` page visit from your browser history
             replaceState: true
           })
@@ -67,8 +67,11 @@
         }
       })
     } else if (event === 'SIGNED_OUT') {
-      // expire cookie
+      // clear data from the pages and session store.
+      pages.set([])
+      $session = null
 
+      // expire cookie
       /*
       ** https://developer.mozilla.org/en-US/docs/web/api/document/cookie
       ** For non-HttpOnly cookies, you can expire the cookie like this, instead of calling a .js endpoint
@@ -82,10 +85,6 @@
         if (res.status !== 204) {
           console.error('failed to expire cookie', res)
         }
-        // clear data from the pages and session store.
-        // however, if the cookie wasn't deleted some of this will re-populate
-        pages.set([])
-        $session = null
       })
     }
   })

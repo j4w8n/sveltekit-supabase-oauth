@@ -1,7 +1,7 @@
 <script>
   import { pages } from '../stores/pages'
   export let svrPages = []
-  $: $pages = svrPages
+  $pages = svrPages
 </script>
 
 <ul>

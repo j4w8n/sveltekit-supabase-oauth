@@ -2,7 +2,6 @@ import { supabase } from '$lib/supabase'
 
 export async function get(event) {
   const user = event.locals.user
-  console.log('page', user)
   if (user) {
     supabase.auth.setAuth(user.access_token)
     try {
