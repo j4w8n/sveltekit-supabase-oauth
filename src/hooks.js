@@ -41,5 +41,5 @@ export const getSession = async (event) => {
   ** if you're not using sensitive data in event.locals.user, then you can use event.locals.user here instead
   ** and skip creating event.locals.session in handle().
   */
-  return event.locals.session ?? null
+  return event.locals.session
 }
