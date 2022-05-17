@@ -2,7 +2,8 @@ import { supabase } from '$lib/supabase'
 
 export async function get(event) {
   const user = event.locals.user
-  if(user) {
+  console.log('page', user)
+  if (user) {
     supabase.auth.setAuth(user.access_token)
     try {
       let { data: roles, error: errRoles } = await supabase.from('roles').select('subdomain')
@@ -23,28 +24,36 @@ export async function get(event) {
           // not authorized for this subdomain
           return {
             status: 302,
-            redirect: '/'
+            headers: {
+              location: '/'
+            }
           }
         }
       } else {
         // no roles found
         return {
           status: 302,
-          redirect: '/'
+          headers: {
+            location: '/'
+          }
         }
       }
     } catch (error) {
       console.error(error)
       return {
         status: 302,
-        redirect: '/'
+        headers: {
+          location: '/'
+        }
       }
     }
   } else {
     // not logged in
     return {
       status: 302,
-      redirect: '/'
+      headers: {
+        location: '/'
+      }
     }
   }
 }

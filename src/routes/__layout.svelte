@@ -21,6 +21,13 @@
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
       // set cookie
+
+      /*
+      ** https://developer.mozilla.org/en-US/docs/web/api/document/cookie
+      ** For non-HttpOnly cookies, you can set the cookie like this, instead of calling a .js endpoint
+      ** document.cookie = `session=${JSON.stringify(sesh)}; Path=/; Secure; SameSite=Strict; Expires=${new Date(sesh.expires_at * 1000).toUTCString()};`
+      */
+
       fetch('/api/cookie', {
         method: 'POST',
         body: JSON.stringify(sesh)
@@ -28,48 +35,46 @@
       .then(async (res) => {
         if (res.status === 200) {
           /*
-          ** hydrate our page array, only needed if we're staying on the current page.
+          ** hydrate our page array.
+          ** only needed if we're staying on the current page.
           ** example, we logged in from `/`, and after login we're staying on `/`
           */
-          //loadPages()
+          loadPages()
 
           /* 
-          ** hydrate the sveltekit session store with data returned from supabase session.
-          ** note that $session = sesh would dangerously save the user's access_token in the session store
-          ** so only grab what you need
+          ** hydrate the sveltekit session store with non-sensitive data returned from the supabase session.
+          ** note that `$session = { user: sesh }` would dangerously save the user's access_token in the session store.
+          ** this is used for immediate post-login reactivity, because the `goto('/')` navigation below is client-side,
+          ** therefore we can't get user data from the freshly stored cookie.
+          ** for example, we show the user's avatar, and the Logout button instead of Login
           */
-          $session = {
-            user: {
-              user_metadata: {
-                avatar_url: sesh.user.user_metadata.avatar_url
-              }
-            }
-          }
+          $session = sesh.user
 
           /*
-          ** fixes trailing hash issue with linkclick-and-backbutton navigation
+          ** fixes navigation issue with trailing hash.
           ** if removed, once you login there will be a `#` at the end of your url
           ** then if you click to another route, say /app, everything works
           ** but if you then click the browser's back button, the url changes but /app's content is still visible
           */
           goto('/app', {
+            // replaceState is optional here. it removes the `/#` page visit from your browser history
             replaceState: true
           })
         } else {
           console.error('Failed to set cookie', res)
-          if (supabase.auth.session()) {
-            signOut()
-          }
+          // optional, but might as well logout of supabase at this point
+          signOut()
         }
       })
-      
+    } else if (event === 'SIGNED_OUT') {
+      // expire cookie
+
       /*
       ** https://developer.mozilla.org/en-US/docs/web/api/document/cookie
-      ** For non-HttpOnly cookies, you can set the cookie like this, instead of calling a .js endpoint
-      ** document.cookie = `session=${JSON.stringify(sesh)}; Path=/; Secure; SameSite=Strict; Expires=${new Date(sesh.expires_at * 1000).toUTCString()};`
+      ** For non-HttpOnly cookies, you can expire the cookie like this, instead of calling a .js endpoint
+      ** document.cookie = `session=; Path=/; Secure; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 UTC;`
       */
 
-    } else if (event === 'SIGNED_OUT') {
       fetch('/api/cookie', {
         method: 'DELETE'
       })
@@ -77,15 +82,11 @@
         if (res.status !== 204) {
           console.error('failed to expire cookie', res)
         }
+        // clear data from the pages and session store.
+        // however, if the cookie wasn't deleted some of this will re-populate
         pages.set([])
-        $session = false
+        $session = null
       })
-
-      /*
-      ** https://developer.mozilla.org/en-US/docs/web/api/document/cookie
-      ** For non-HttpOnly cookies, you can expire the cookie like this, instead of calling a .js endpoint
-      ** document.cookie = `session=; Path=/; Secure; SameSite=Strict; Expires=Thu, 01 Jan 1970 00:00:00 UTC;`
-      */
     }
   })
 </script>
@@ -94,8 +95,13 @@
   Navbar
   <a href="/">Home</a>
   {#if user}
-  <img style="width: 32px; height: 32px; border-radius: 9999px;" src={user.user.user_metadata.avatar_url} alt="person_avatar">
+  <img style="width: 32px; height: 32px; border-radius: 9999px;" src={user.user_metadata.avatar_url} alt="person_avatar">
   <button on:click={async () => {
+    /*
+    ** placing window.location.replace('/') inside of the response to the /api/cookie call above
+    ** causes the supabase client to log a NetworkError.
+    ** otherwise, we could've simply called `signOut()` here
+    */
     const signedOut = await signOut()
     if (signedOut) {
       window.location.replace('/')

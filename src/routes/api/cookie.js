@@ -2,10 +2,9 @@
 ** https://kit.svelte.dev/docs/routing#endpoints-body-parsing
 */
 
-export const post = async (event) => {
-  const session = event.request.body ? await event.request.json() : null
+export const post = async ({ request }) => {
+  const session = request.body ? await request.json() : null
   if (session) {
-    event.locals.user = session
     return {
       status: 200,
       headers: {
@@ -19,8 +18,7 @@ export const post = async (event) => {
     }
   }
 }
-export const del = (event) => {
-  event.locals.user = null
+export const del = () => {
   return {
     status: 204,
     headers: {
