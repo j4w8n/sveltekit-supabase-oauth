@@ -1,22 +1,8 @@
-<script context="module">
-  /*
-  ** since shadow endpoints aren't currently supported for __layout.svelte,
-  ** we still need to use the load function here to access the sveltekit session store
-  */
-  export const load = async ({ session }) => {
-    return {
-      props: {
-        user: session
-      }
-    }
-  }
-</script>
 <script>
   import { session } from '$app/stores'
   import { goto } from '$app/navigation'
   import { supabase, signIn, signOut } from '$lib/supabase'
   import { pages, loadPages } from '../stores/pages'
-  export let user
 
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
@@ -68,7 +54,7 @@
       })
     } else if (event === 'SIGNED_OUT') {
       // clear data from the pages and session store.
-      pages.set([])
+      $pages = []
       $session = null
 
       // expire cookie
@@ -93,8 +79,8 @@
 <nav style="border: solid; border-width: 0 0 2px">
   Navbar
   <a href="/">Home</a>
-  {#if user}
-  <img style="width: 32px; height: 32px; border-radius: 9999px;" src={user.user_metadata.avatar_url} alt="person_avatar">
+  {#if $session}
+  <img style="width: 32px; height: 32px; border-radius: 9999px;" src={$session.user_metadata.avatar_url} alt="person_avatar">
   <button on:click={async () => {
     /*
     ** placing window.location.replace('/') inside of the response to the /api/cookie call above
