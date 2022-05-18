@@ -79,20 +79,20 @@
 <nav style="border: solid; border-width: 0 0 2px; padding-bottom: 5px;">
   <a href="/">Home</a>
   {#if $session}
-  <img style="width: 32px; height: 32px; border-radius: 9999px;" src={$session.user_metadata.avatar_url} alt="person_avatar">
-  <button on:click={async () => {
-    /*
-    ** placing window.location.replace('/') inside of the response to the /api/cookie call above
-    ** causes the supabase client to log a NetworkError.
-    ** otherwise, we could've simply called `signOut()` here
-    */
-    const signedOut = await signOut()
-    if (signedOut) {
-      window.location.replace('/')
-    }
-  }}>Logout</button>
+    <img style="width: 32px; height: 32px; border-radius: 9999px;" src={$session.user_metadata.avatar_url} alt="person_avatar">
+    <button on:click={async () => {
+      /*
+      ** placing window.location.replace('/') inside of the response to the /api/cookie call above
+      ** causes the supabase client to log a NetworkError.
+      ** otherwise, we could've simply called `signOut()` here
+      */
+      const signedOut = await signOut()
+      if (signedOut) {
+        window.location.replace('/')
+      }
+    }}>Logout</button>
   {:else}
-  <button on:click={() => {signIn('github')}}>Github Login</button>
+    <button on:click={() => {signIn('github')}}>Github Login</button>
   {/if}
 </nav>
 

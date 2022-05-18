@@ -5,9 +5,9 @@
 </script>
 
 {#if $pages.length > 0}
-<ul>
-{#each $pages as page}
-  <li><a href="/page/{page.subdomain}">{page.subdomain}</a></li>
-{/each}
-</ul>
+  <ul>
+    {#each $pages as page}
+      <li><a href="/page/{page.subdomain}">{page.subdomain}</a></li>
+    {/each}
+  </ul>
 {/if}
