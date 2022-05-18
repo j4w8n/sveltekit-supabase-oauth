@@ -76,8 +76,7 @@
   })
 </script>
 
-<nav style="border: solid; border-width: 0 0 2px">
-  Navbar
+<nav style="border: solid; border-width: 0 0 2px; padding-bottom: 5px;">
   <a href="/">Home</a>
   {#if $session}
   <img style="width: 32px; height: 32px; border-radius: 9999px;" src={$session.user_metadata.avatar_url} alt="person_avatar">

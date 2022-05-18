@@ -1,5 +1,7 @@
 <script>
   import { pages } from '../stores/pages'
+  export let svrPages = []
+  $pages = svrPages
 </script>
 
 {#if $pages.length > 0}

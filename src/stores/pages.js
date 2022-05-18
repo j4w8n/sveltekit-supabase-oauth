@@ -12,8 +12,6 @@ export const loadPages = async () => {
     if (error) {
       console.error('get pages error', error)
     }
-    
-    // we're inside a function, so we can't reference the store with $ and must use set()
     pages.set(data)
   } catch (error) {
     console.error(error)
