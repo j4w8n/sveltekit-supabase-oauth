@@ -29,7 +29,7 @@
 
           /* 
           ** hydrate the sveltekit session store with non-sensitive data returned from the supabase session.
-          ** note that `$session = { user: sesh }` would dangerously save the user's access_token in the session store.
+          ** note that `$session = sesh` would dangerously save the user's access_token in the session store.
           ** this is used for immediate post-login reactivity, because the `goto('/')` navigation below is client-side,
           ** therefore we can't get user data from the freshly stored cookie.
           ** for example, we show the user's avatar, and the Logout button instead of Login
