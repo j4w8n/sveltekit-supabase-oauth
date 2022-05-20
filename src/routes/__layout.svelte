@@ -71,6 +71,7 @@
         if (res.status !== 204) {
           console.error('failed to expire cookie', res)
         }
+        goto('/')
       })
     }
   })
@@ -80,19 +81,9 @@
   <a href="/">Home</a>
   {#if $session}
     <img style="width: 32px; height: 32px; border-radius: 9999px;" src={$session.user_metadata.avatar_url} alt="person_avatar">
-    <button on:click={async () => {
-      /*
-      ** placing window.location.replace('/') inside of the response to the /api/cookie call above
-      ** causes the supabase client to log a NetworkError.
-      ** otherwise, we could've simply called `signOut()` here
-      */
-      const signedOut = await signOut()
-      if (signedOut) {
-        window.location.replace('/')
-      }
-    }}>Logout</button>
+    <button on:click={() => { signOut() }}>Logout</button>
   {:else}
-    <button on:click={() => {signIn('github')}}>Github Login</button>
+    <button on:click={() => { signIn('github') }}>Github Login</button>
   {/if}
 </nav>
 
