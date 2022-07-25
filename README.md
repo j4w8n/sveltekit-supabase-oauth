@@ -2,7 +2,7 @@
 
 setup oauth with supabase and sveltekit.
 
-Recent breaking changes, compared to the video.
+Recent breaking changes, compared to the [YouTube video](https://www.youtube.com/watch?v=R8e23-hrzFM).
 Updated sveltekit to the latest version. This requires:
 
 - installing vite as a dev dependency
