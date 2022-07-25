@@ -1,6 +1,6 @@
 import { supabase } from '$lib/supabase'
 
-export async function get(event) {
+export async function GET(event) {
   let svrPages
   const user = event.locals.user
   if (user) {

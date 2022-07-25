@@ -7,7 +7,7 @@ export const handle = async ({ event, resolve }) => {
   // if there's a cookie named `session`, grab the info
   const cookies = await cookie.parse(event.request.headers.get('cookie') || '')
   const session = cookies.session ? JSON.parse(cookies.session) : null
-
+  
   /*
   ** use event.locals to securely store user data, like access tokens, for use in js endpoints.
   ** `.user` is arbitrary - use what you'd like.
@@ -15,7 +15,7 @@ export const handle = async ({ event, resolve }) => {
   event.locals.user = session
     ? {
         access_token: session.access_token,
-        id: session.user.id
+        id: session.id
       }
     : null
 

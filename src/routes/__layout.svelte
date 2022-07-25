@@ -14,9 +14,18 @@
       ** document.cookie = `session=${JSON.stringify(sesh)}; Path=/; Secure; SameSite=Strict; Expires=${new Date(sesh.expires_at * 1000).toUTCString()};`
       */
 
+      const body = JSON.stringify(
+        {
+          avatar_url: sesh.user.user_metadata.avatar_url,
+          expires_at: sesh.expires_at,
+          id: sesh.user.id,
+          access_token: sesh.access_token
+        }
+      )
+
       fetch('/api/cookie', {
         method: 'POST',
-        body: JSON.stringify(sesh)
+        body
       })
       .then(async (res) => {
         if (res.status === 200) {
