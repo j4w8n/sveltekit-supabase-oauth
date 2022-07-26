@@ -7,13 +7,6 @@
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
       // set cookie
-
-      /*
-      ** https://developer.mozilla.org/en-US/docs/web/api/document/cookie
-      ** For non-HttpOnly cookies, you can set the cookie like this, instead of calling a .js endpoint
-      ** document.cookie = `session=${JSON.stringify(sesh)}; Path=/; Secure; SameSite=Strict; Expires=${new Date(sesh.expires_at * 1000).toUTCString()};`
-      */
-
       const body = JSON.stringify(
         {
           avatar_url: sesh.user.user_metadata.avatar_url,
@@ -22,6 +15,12 @@
           access_token: sesh.access_token
         }
       )
+
+      /*
+      ** https://developer.mozilla.org/en-US/docs/web/api/document/cookie
+      ** For non-HttpOnly cookies, you can set the cookie like this, instead of calling a .js endpoint
+      ** document.cookie = `session=${JSON.stringify(body)}; Path=/; Secure; SameSite=Strict; Expires=${sesh.expires_at ? new Date(sesh.expires_at * 1000).toUTCString() : 'Thu, 01 Jan 1970 00:00:00 UTC'};`
+      */
 
       fetch('/api/cookie', {
         method: 'POST',
