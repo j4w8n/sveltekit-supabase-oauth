@@ -18,7 +18,7 @@ export const POST = async ({ request }) => {
     }
   }
 }
-export const DEL = () => {
+export const DELETE = () => {
   return {
     status: 204,
     headers: {
