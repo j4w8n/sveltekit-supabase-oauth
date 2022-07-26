@@ -7,6 +7,10 @@
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
       // set cookie
+
+      /*
+      ** Declare the access_token last. Otherwise you may risk breaking cookie behavior
+      */
       const cookie_data = JSON.stringify(
         {
           avatar_url: sesh.user.user_metadata.avatar_url,
