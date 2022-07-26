@@ -12,7 +12,7 @@ export const handle = async ({ event, resolve }) => {
   ** use event.locals to securely store user data, like access tokens, for use in js endpoints.
   ** `.user` is arbitrary - use what you'd like.
   */
-  event.locals.user = session
+  event.locals.session = session
     ? {
         access_token: session.access_token,
         id: session.id
@@ -26,7 +26,7 @@ export const handle = async ({ event, resolve }) => {
   ** we're doing this here to prevent needing to re-read cookies in getSession().
   ** notice we're not grabbing any access_tokens with session.user.
   */
-  event.locals.session = session ? session.user : null
+  event.locals.user = session ? session.user : null
 
   const response = await resolve(event)
   return response
@@ -41,5 +41,5 @@ export const getSession = async (event) => {
   ** if you're not using sensitive data in event.locals.user, then you can use event.locals.user here instead
   ** and skip creating event.locals.session in handle().
   */
-  return event.locals.session
+  return event.locals.user
 }

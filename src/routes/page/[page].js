@@ -1,9 +1,9 @@
 import { supabase } from '$lib/supabase'
 
 export async function GET(event) {
-  const user = event.locals.user
-  if (user) {
-    supabase.auth.setAuth(user.access_token)
+  const session = event.locals.session
+  if (session) {
+    supabase.auth.setAuth(session.access_token)
     try {
       let { data: roles, error: errRoles } = await supabase.from('roles').select('subdomain')
       if (errRoles) {
