@@ -10,7 +10,7 @@ export const handle = async ({ event, resolve }) => {
   
   /*
   ** use event.locals to securely store user data, like access tokens, for use in js endpoints.
-  ** `.user` is arbitrary - use what you'd like.
+  ** `.session` is arbitrary - use what you'd like.
   */
   event.locals.session = session
     ? {
@@ -21,7 +21,7 @@ export const handle = async ({ event, resolve }) => {
 
   /*
   ** hydrate data, for use in getSession().
-  ** this data is consequently available on the server-side via event.locals.session,
+  ** this data is consequently available on the server-side via event.locals.user,
   ** but in this demo we don't use it anywhere else.
   ** we're doing this here to prevent needing to re-read cookies in getSession().
   ** notice we're not grabbing any access_tokens with session.user.
@@ -37,9 +37,9 @@ export const handle = async ({ event, resolve }) => {
 */
 export const getSession = async (event) => {
   /*
-  ** hydrate the sveltekit session store with data from the 'session' cookie via event.locals.session above.
-  ** if you're not using sensitive data in event.locals.user, then you can use event.locals.user here instead
-  ** and skip creating event.locals.session in handle().
+  ** hydrate the sveltekit session store with data from the 'session' cookie via event.locals.user above.
+  ** if you're not using sensitive data in event.locals.session, then you can use event.locals.session here,
+  ** and skip creating event.locals.user in handle().
   */
   return event.locals.user
 }
