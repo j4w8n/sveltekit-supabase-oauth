@@ -7,7 +7,7 @@
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
       // set cookie
-      const cookie = JSON.stringify(
+      const cookie_data = JSON.stringify(
         {
           avatar_url: sesh.user.user_metadata.avatar_url,
           expires_at: sesh.expires_at,
@@ -24,7 +24,7 @@
 
       fetch('/api/cookie', {
         method: 'POST',
-        body: cookie
+        body: cookie_data
       })
       .then(async (res) => {
         if (res.status === 200) {
