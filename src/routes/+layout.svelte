@@ -15,19 +15,6 @@
   setContext(keys.pages, { pages: writable([]) })
   const { pages } = getContext(keys.pages)
 
-  const loadPages = async () => {
-    try {
-      let { data, error } = await supabase.from('roles').select('subdomain,role')
-      if (error) {
-        console.error('get pages error', error)
-      }
-      $pages = data
-      return true
-    } catch (error) {
-      console.error(error)
-    }
-  }
-
   supabase.auth.onAuthStateChange(async (event, sesh) => {
     if (event === 'SIGNED_IN') {
       /*
@@ -56,9 +43,6 @@
       })
       .then(async (res) => {
         if (res.status === 200) {
-          /* Hydrate the $pages store, for /app */
-          loadPages()
-
           /* 
           ** Hydrate the $session store with non-sensitive data returned from the supabase session.
           ** This is used for immediate post-login reactivity.
@@ -73,6 +57,7 @@
           ** Then if you click to another route, say /app, everything works.
           ** But if you then click the browser's back button, the url changes but /app's content is still visible.
           */
+          
           goto('/app', {
             // replaceState is optional here. It removes the `/app#` page visit from your browser history.
             replaceState: true

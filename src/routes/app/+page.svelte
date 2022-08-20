@@ -1,8 +1,9 @@
 <script>
   import { keys } from '$lib/keys'
   import { getContext } from 'svelte'
+
   export let data
-  
+
   const { session } = getContext(keys.session)
   const { pages } = getContext(keys.pages)
   $pages = data.svrPages

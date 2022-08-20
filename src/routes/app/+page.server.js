@@ -2,7 +2,6 @@ import { supabase } from '$lib/supabase'
 import { redirect } from '@sveltejs/kit'
 
 export async function load({ parent, locals }) {
-  console.log('load called for /app')
   let svrPages
   const { session } = await parent()
 

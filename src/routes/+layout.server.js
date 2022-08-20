@@ -1,5 +1,4 @@
 export const load = ({ locals }) => {
-  console.log('load called for layout')
   return locals.session ?
     {
       session: {
