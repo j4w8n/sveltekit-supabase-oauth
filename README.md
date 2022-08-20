@@ -11,8 +11,8 @@ Compared to the [YouTube video](https://www.youtube.com/watch?v=R8e23-hrzFM).
 - installing vite as a dev dependency
 - creating a vite.config.js file
 - changing HTTP methods to uppercase
-- complete overhaul of routing [migration guide](https://github.com/sveltejs/kit/discussions/5774)
-- changes to various APIs [docs](https://kit.svelte.dev/docs/load)
+- complete overhaul of routing => [migration guide](https://github.com/sveltejs/kit/discussions/5774)
+- changes to various APIs => [docs](https://kit.svelte.dev/docs/load)
 - deprecation of the SvelteKit `$session` store
 
 ## Other Changes
