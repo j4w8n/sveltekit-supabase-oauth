@@ -7,7 +7,8 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 
 export const signIn = async (provider) => {
   try {
-    const { error } = await supabase.auth.signIn({ provider })
+    const { error } = await supabase.auth.signIn({ provider }, { redirectTo: 'http://localhost:5173/login' })
+    //const { error } = await supabase.auth.signIn({ provider })
     if (error) console.error(error)
   } catch (error) {
     console.error(error)
