@@ -23,5 +23,5 @@ Resolution was to create a custom session object, being sure to list the `access
 
 ## notable features
 
-- event.locals - securely stores the access_token for server-side requests.
+- event.locals - securely stores the `access_token` for server-side requests.
 - replaces the now deprecated SvelteKit `$session` store.
