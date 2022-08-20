@@ -1,5 +1,5 @@
 /* 
-** https://kit.svelte.dev/docs/routing#endpoints-body-parsing
+** https://kit.svelte.dev/docs/web-standards#fetch-apis-request
 */
 
 export const POST = async ({ request }) => {
