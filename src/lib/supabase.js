@@ -8,6 +8,7 @@ export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
 export const signIn = async (provider) => {
   try {
     /*
+    ** if logging in on a page other than `/`:
     ** to prevent a flash of content after login,
     ** set redirectTo equal to your app's login page
     */
