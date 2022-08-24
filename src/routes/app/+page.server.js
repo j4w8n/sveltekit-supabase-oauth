@@ -1,23 +1,24 @@
 import { supabase } from '$lib/supabase'
 import { redirect } from '@sveltejs/kit'
 
-export async function load({ parent, locals }) {
-  let svrPages
-  const { session } = await parent()
+export async function load({ locals, parent }) {
+  console.log('app/+page.server.js load running')
+  //if (!locals.session) throw redirect(307, '/')
 
-  if (!session) throw redirect(307, '/login')
+  const { session }  = await parent()
+  let pages, user_id = session?.user_id
 
-  supabase.auth.setAuth(locals.session.access_token)
+  supabase.auth.setAuth(locals.session?.access_token)
   try {
-    let { data, error } = await supabase.from('roles').select('subdomain,role')
+    let { data, error } = await supabase.from('pages').select('subdomain')
     if (error) console.error('get pages error', error)
-    svrPages = data
+    pages = data
   } catch (error) {
     console.error(error)
   }
 
   return {
-    svrPages,
-    session
+    pages,
+    user_id
   }
 }
