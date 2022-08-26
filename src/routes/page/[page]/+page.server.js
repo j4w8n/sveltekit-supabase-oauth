@@ -2,9 +2,7 @@ import { supabase } from '$lib/supabase'
 import { redirect } from '@sveltejs/kit'
 
 export async function load({ locals, params }) {
-  const session = locals.session
-  if (session) {
-    supabase.auth.setAuth(session.access_token)
+  if (locals.user) {
     try {
       let { data: roles, error: errRoles } = await supabase.from('roles').select('subdomain')
       if (errRoles) {
@@ -19,7 +17,7 @@ export async function load({ locals, params }) {
             page: found[0]
           }
         } else {
-          // not authorized for this subdomain
+          // not authorized for this subdomain, or not found
           throw redirect(307, '/app')
         }
       } else {

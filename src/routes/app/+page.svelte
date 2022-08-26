@@ -2,10 +2,10 @@
   import { supabase } from '$lib/supabase'
   import { invalidate } from '$app/navigation'
   export let data
+  console.log('app page loading')
 
   let page_name
   const user_id = data.user_id
-  $: console.log('page data', data)
 
   const add_page = async () => {
     const { data } = await supabase
@@ -25,8 +25,10 @@
   <input bind:this={page_name} type="text">
   <button type="submit">Add</button>
 </form>
-<ul>
-{#each data.pages as page}
-  <li><a href="/page/{page.subdomain}">{page.subdomain}</a></li>
-{/each}
-</ul>
+{#if data.pages.length > 0}
+  <ul>
+  {#each data.pages as page}
+    <li><a href="/page/{page.subdomain}">{page.subdomain}</a></li>
+  {/each}
+  </ul>
+{/if}
