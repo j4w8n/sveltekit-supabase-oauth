@@ -4,10 +4,11 @@ export const handleSession = async (event, session) => {
   if (event === 'SIGNED_OUT') {
     try {
       await fetch('/api/cookie', {
-        method: 'DELETE'
+        method: 'DELETE',
+        credentials: 'same-origin',
       })
-    } catch (error) {
-      throw error(500, error)
+    } catch (err) {
+      throw error(500, err)
     }
     return { url: '/' }
   }
@@ -15,12 +16,26 @@ export const handleSession = async (event, session) => {
     try {
       await fetch('/api/cookie', {
         method: 'POST',
+        credentials: 'same-origin',
         body: JSON.stringify(session)
       })
-    } catch (error) {
-      throw error(500, error)
+    } catch (err) {
+      throw error(500, err)
     }
     return { url: '/app' }
   }
-  return false
+  if (event === 'TOKEN_REFRESHED') {
+    try {
+      console.log('trying...')
+      await fetch('/api/cookie', {
+        method: 'POST',
+        credentials: 'same-origin',
+        body: JSON.stringify(session)
+      })
+    } catch (err) {
+      throw error(500, err)
+    }
+    return { url: false }
+  }
+  return { url: false }
 }

@@ -1,34 +1,36 @@
-import { supabase } from '$lib/supabase'
-import { redirect } from '@sveltejs/kit'
+import { supabaseServerClient } from '$lib/supabase'
+import { redirect, error } from '@sveltejs/kit'
 
-export async function load({ locals, params }) {
-  if (locals.user) {
+export async function load({ params, parent }) {
+  console.log('page load running')
+  const { user }  = await parent()
+  if (user) {
     try {
-      let { data: roles, error: errRoles } = await supabase.from('roles').select('subdomain')
-      if (errRoles) {
-        console.error('error fetching roles', errRoles)
-      }
-      if (roles.length > 0) {
-        const found = roles.filter(item => {
-          if (item.subdomain === params.page) return true
-        })
-        if (found.length > 0) {
-          return {
-            page: found[0]
-          }
-        } else {
-          // not authorized for this subdomain, or not found
-          throw redirect(307, '/app')
-        }
-      } else {
-        // no roles found
-        throw redirect(307, '/app')
+      var { data, error } = await supabaseServerClient.from('roles').select('subdomain')
+      if (error) {
+        console.error('error fetching roles', error)
       }
     } catch (error) {
       console.error(error)
     }
+    if (data.length > 0) {
+      const found = data.filter(item => {
+        if (item.subdomain === params.page) return true
+      })
+      if (found.length > 0) {
+        return {
+          page: found[0]
+        }
+      } else {
+        // not authorized for this subdomain, or subdomain not found
+        throw redirect(303, '/app')
+      }
+    } else {
+      // no roles found
+      throw redirect(303, '/app')
+    }
   } else {
     // not logged in
-    throw redirect(307, '/login')
+    throw redirect(303, '/login')
   }
 }

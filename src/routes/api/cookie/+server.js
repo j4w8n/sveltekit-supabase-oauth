@@ -6,9 +6,8 @@ import { serialize } from 'cookie'
 
 export const POST = async ({ request }) => {
   const session = request.body ? await request.json() : null
-
   if (session) {
-    const expires = session.expires_at ? new Date(session.expires_at * 1000) : new Date('1970-01-01T00:00:00.000Z').valueOf()
+    const expires = session.expires_at ? new Date(session.expires_at * 1000) : new Date(0)
     const user_data = JSON.stringify(
       {
         avatar_url: session.user.user_metadata.avatar_url,
@@ -47,17 +46,27 @@ export const POST = async ({ request }) => {
 }
 
 export const DELETE = () => {
-  const cookie = serialize('session', '', {
+  const user = serialize('user', '', {
+    expires: new Date(0),
     httpOnly: true,
     path: '/',
     secure: true,
-    sameSite: true,
-    expires: new Date(0)
+    sameSite: true
   })
+  const tokens = serialize('session', '', {
+    expires: new Date(0),
+    httpOnly: true,
+    path: '/',
+    secure: true,
+    sameSite: true
+  })
+
+  const headers = new Headers()
+  headers.append('set-cookie', user)
+  headers.append('set-cookie', tokens)
+
   return new Response (null, {
     status: 204,
-    headers: {
-      'set-cookie': cookie
-    }
+    headers
   })
 }

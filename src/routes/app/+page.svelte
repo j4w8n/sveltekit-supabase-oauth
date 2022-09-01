@@ -1,14 +1,15 @@
 <script>
-  import { supabase } from '$lib/supabase'
+  import { supabaseClient } from '$lib/supabase'
   import { invalidate } from '$app/navigation'
-  export let data
-  console.log('app page loading')
+  import { page } from '$app/stores'
+  //export let data
+  console.log('app page')
 
   let page_name
-  const user_id = data.user_id
+  const user_id = $page.data.user_id
 
   const add_page = async () => {
-    const { data } = await supabase
+    const { data } = await supabaseClient
       .from('pages')
       .insert([
         { subdomain: page_name.value, user_id },
@@ -25,9 +26,10 @@
   <input bind:this={page_name} type="text">
   <button type="submit">Add</button>
 </form>
-{#if data.pages.length > 0}
+<a href="page/not">not</a>
+{#if $page.data.pages.length > 0}
   <ul>
-  {#each data.pages as page}
+  {#each $page.data.pages as page}
     <li><a href="/page/{page.subdomain}">{page.subdomain}</a></li>
   {/each}
   </ul>

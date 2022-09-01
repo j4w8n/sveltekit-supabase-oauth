@@ -1,9 +1,14 @@
 import { createClient } from '@supabase/supabase-js'
+import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
-const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY
-const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL
+export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
+export const supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
-export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+export const setSupabaseHeaders = (access_token) => {
+  supabaseServerClient.headers.Authorization = `Bearer ${access_token}`
+  supabaseServerClient.realtime.headers.Authorization = `Bearer ${access_token}`
+  supabaseServerClient.rest.headers.Authorization = `Bearer ${access_token}`
+}
 
 export const signIn = async (provider) => {
   try {
@@ -12,7 +17,7 @@ export const signIn = async (provider) => {
     ** to prevent a flash of content after login,
     ** set redirectTo equal to your app's login page
     */
-    const { error } = await supabase.auth.signIn({ provider }, { redirectTo: 'http://localhost:5173/login' })
+    const { error } = await supabaseClient.auth.signInWithOAuth({ provider }, { redirectTo: 'http://localhost:5173/login' })
     if (error) console.error(error)
   } catch (error) {
     console.error(error)
@@ -21,7 +26,7 @@ export const signIn = async (provider) => {
 
 export const signOut = async () => {
   try {
-    const { error } = await supabase.auth.signOut()
+    const { error } = await supabaseClient.auth.signOut()
     if (error) console.error(error)
   } catch (error) {
     console.error(error)

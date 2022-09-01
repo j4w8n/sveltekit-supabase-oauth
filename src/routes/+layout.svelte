@@ -1,19 +1,19 @@
 <script>
   import { goto, invalidate } from '$app/navigation'
   import { handleSession } from '$lib/session'
-  import { supabase, signOut } from '$lib/supabase'
+  import { supabaseClient, signOut } from '$lib/supabase'
  
-  export let data, response
+  export let data
   $: user = data.user
 
-  supabase.auth.onAuthStateChange(async (event, session) => {
-    //console.log(event)
-    if (event !== 'TOKEN_REFRESHED') {
-      response = await handleSession(event, session)
-    }
-
-    if (response) {
+  supabaseClient.auth.onAuthStateChange(async (event, session) => {
+    console.log(event)
+    const response = await handleSession(event, session)
+    
+    if (response.url) {
+      console.log('invalidating...')
       await invalidate()
+      console.log('goto...')
       goto(response.url)
     }
   })
