@@ -1,5 +1,5 @@
 <script>
-  import { goto, invalidate } from '$app/navigation'
+  import { goto, invalidateAll } from '$app/navigation'
   import { handleSession } from '$lib/session'
   import { supabaseClient, signOut } from '$lib/supabase'
  
@@ -7,13 +7,10 @@
   $: user = data.user
 
   supabaseClient.auth.onAuthStateChange(async (event, session) => {
-    console.log(event)
     const response = await handleSession(event, session)
     
     if (response.url) {
-      console.log('invalidating...')
-      await invalidate()
-      console.log('goto...')
+      await invalidateAll()
       goto(response.url)
     }
   })

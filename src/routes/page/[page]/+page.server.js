@@ -2,7 +2,6 @@ import { supabaseServerClient } from '$lib/supabase'
 import { redirect, error } from '@sveltejs/kit'
 
 export async function load({ params, parent }) {
-  console.log('page load running')
   const { user }  = await parent()
   if (user) {
     try {

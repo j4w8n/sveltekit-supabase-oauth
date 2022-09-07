@@ -1,10 +1,9 @@
 import { json } from '@sveltejs/kit'
-import { serialize } from 'cookie'
 /* 
 ** https://kit.svelte.dev/docs/web-standards#fetch-apis-request
 */
 
-export const POST = async ({ request }) => {
+export const POST = async ({ cookies, request }) => {
   const session = request.body ? await request.json() : null
   if (session) {
     const expires = session.expires_at ? new Date(session.expires_at * 1000) : new Date(0)
@@ -20,53 +19,40 @@ export const POST = async ({ request }) => {
         access_token: session.access_token
       }
     )
-    
-    const user = serialize('user', user_data, {
+
+    const user_options = {
       expires,
-      httpOnly: true,
       path: '/',
-      secure: true,
       sameSite: true
-    })
-    const tokens = serialize('session', token_data, {
+    }
+    const token_options = {
       expires,
-      httpOnly: true,
       path: '/',
-      secure: true,
       sameSite: true
-    })
-    const headers = new Headers()
-    headers.append('set-cookie', user)
-    headers.append('set-cookie', tokens)
+    }
+    cookies.set('user', user_data, user_options)
+    cookies.set('tokens', token_data, token_options)
     
-    return new Response (null, { headers })
+    return new Response (null)
   } else {
     return new Response('Expecting JSON body, but body was null.', { status: 400 })
   }
 }
 
-export const DELETE = () => {
-  const user = serialize('user', '', {
+export const DELETE = ({ cookies }) => {
+  const user_options = {
     expires: new Date(0),
-    httpOnly: true,
     path: '/',
-    secure: true,
     sameSite: true
-  })
-  const tokens = serialize('session', '', {
+  }
+  const token_options = {
     expires: new Date(0),
-    httpOnly: true,
     path: '/',
-    secure: true,
     sameSite: true
-  })
+  }
 
-  const headers = new Headers()
-  headers.append('set-cookie', user)
-  headers.append('set-cookie', tokens)
+  cookies.set('tokens', '', token_options)
+  cookies.set('user', '', user_options)
 
-  return new Response (null, {
-    status: 204,
-    headers
-  })
+  return new Response (null, { status: 204 })
 }

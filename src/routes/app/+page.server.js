@@ -1,10 +1,7 @@
 import { redirect } from '@sveltejs/kit'
 import { supabaseServerClient } from '$lib/supabase'
 
-export async function load({ locals, parent }) {
-  console.log('app loading')
-
-  //if (!locals.user) throw redirect(307, '/')
+export async function load({ parent }) {
   const { user }  = await parent()
   let pages = [], user_id = user?.user_id
   

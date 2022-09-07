@@ -2,8 +2,6 @@
   import { supabaseClient } from '$lib/supabase'
   import { invalidate } from '$app/navigation'
   import { page } from '$app/stores'
-  //export let data
-  console.log('app page')
 
   let page_name
   const user_id = $page.data.user_id
