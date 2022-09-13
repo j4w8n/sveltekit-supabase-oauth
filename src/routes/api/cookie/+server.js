@@ -7,31 +7,26 @@ export const POST = async ({ cookies, request }) => {
   const session = request.body ? await request.json() : null
   if (session) {
     const expires = session.expires_at ? new Date(session.expires_at * 1000) : new Date(0)
+    const { refresh_token, access_token } = session
     const user_data = JSON.stringify(
       {
         avatar_url: session.user.user_metadata.avatar_url,
         id: session.user.id
       }
     )
-    const token_data = JSON.stringify(
-      {
-        refresh_token: session.refresh_token,
-        access_token: session.access_token
-      }
-    )
 
-    const user_options = {
+    const options = {
       expires,
       path: '/',
       sameSite: true
     }
-    const token_options = {
-      expires,
-      path: '/',
-      sameSite: true
-    }
-    cookies.set('user', user_data, user_options)
-    cookies.set('tokens', token_data, token_options)
+    cookies.set('user', user_data, options)
+    cookies.set('tokens', JSON.stringify(
+      {
+        refresh_token,
+        access_token
+      }
+    ), options)
     
     return new Response (null)
   } else {
@@ -40,19 +35,16 @@ export const POST = async ({ cookies, request }) => {
 }
 
 export const DELETE = ({ cookies }) => {
-  const user_options = {
+  const options = {
     expires: new Date(0),
     path: '/',
     sameSite: true
   }
-  const token_options = {
-    expires: new Date(0),
-    path: '/',
-    sameSite: true
-  }
+  cookies.set('tokens', '', options)
+  cookies.set('user', '', options)
 
-  cookies.set('tokens', '', token_options)
-  cookies.set('user', '', user_options)
+  //cookies.delete('tokens')
+  //cookies.delete('user')
 
   return new Response (null, { status: 204 })
 }

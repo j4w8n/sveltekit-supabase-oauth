@@ -4,7 +4,7 @@ import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/publi
 export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 export const supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
-export const setSupabaseHeaders = (access_token) => {
+export const setHeaders = (access_token) => {
   supabaseServerClient.headers.Authorization = `Bearer ${access_token}`
   supabaseServerClient.realtime.headers.Authorization = `Bearer ${access_token}`
   supabaseServerClient.rest.headers.Authorization = `Bearer ${access_token}`

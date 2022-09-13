@@ -1,19 +1,26 @@
 {
   "name": "sk-sb-oauth",
   "version": "0.0.1",
+  "main": "index.js",
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",
     "package": "vite package",
     "preview": "vite preview",
-    "prepare": "vite sync"
+    "prepare": "vite sync",
+    "check": "svelte-check --tsconfig ./tsconfig.json",
+    "check:watch": "svelte-check --tsconfig ./tsconfig.json --watch"
   },
   "devDependencies": {
-    "@supabase/supabase-js": "2.0.0-rc.7",
     "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "1.0.0-next.476",
+    "@sveltejs/kit": "1.0.0-next.480",
     "svelte": "^3.50.0",
+    "svelte-check": "2.9.0",
+    "typescript": "4.8.3",
     "vite": "3.1.0-beta.1"
   },
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "2.0.0-rc.10"
+  }
 }
