@@ -35,16 +35,8 @@ export const POST = async ({ cookies, request }) => {
 }
 
 export const DELETE = ({ cookies }) => {
-  const options = {
-    expires: new Date(0),
-    path: '/',
-    sameSite: true
-  }
-  cookies.set('tokens', '', options)
-  cookies.set('user', '', options)
-
-  //cookies.delete('tokens')
-  //cookies.delete('user')
+  cookies.delete('tokens', { path: '/' })
+  cookies.delete('user', { path: '/' })
 
   return new Response (null, { status: 204 })
 }
