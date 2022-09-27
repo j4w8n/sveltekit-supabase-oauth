@@ -1,22 +1,22 @@
 import { setHeaders, supabaseServerClient } from '$lib/supabase'
+import { get_cookies } from './utils/cookies'
 
 /*
 ** https://kit.svelte.dev/docs/hooks#server-hooks-handle
 */
 export const handle = async ({ event, resolve }) => {
-  const tokens = event.cookies.get('tokens') ? JSON.parse(event.cookies.get('tokens')) : null
-  const user = event.cookies.get('user') ? JSON.parse(event.cookies.get('user')) : null
+  const cookies = get_cookies(event, ['tokens', 'user'])
 
   /* set Authorization headers for server-side `supabaseServerClient` */
-  if (tokens) {
+  if (cookies.tokens) {
     /* v2 RC supabase-js client */
-    setHeaders(tokens.access_token)
+    setHeaders(cookies.tokens.access_token)
 
     /* v1 supabase-js client */
     //supabaseServerClient.auth.setSession(tokens.access_token)
   }
   
-  event.locals.user = user
+  event.locals.user = cookies.user
 
   const response = await resolve(event)
   return response
