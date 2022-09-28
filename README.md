@@ -18,9 +18,10 @@ A ton of recent changes, including:
 
 ## Notable Features
 
-- sets server-side supabase client authentication in hooks.
+- sets server-side supabase client authentication in `hooks.server.js`.
 - uses a [layout group](https://kit.svelte.dev/docs/advanced-routing#advanced-layouts-group) to guard all routes where the user should be authenticated in order to reach the route.
+- for now, replaces the old $session store with a secure version. This is not the only method available, but I'm trying out something other than `invaldiateAll()`.
 
 ## Roadmap
 
-- replace the SvelteKit session store. partially doing this with `invalidateAll()`; but only using a `session` variable right now, since this demo doesn't currently need session data across pages. however, this isn't a real-world scenario so I need to improve this.
+...You tell me.
