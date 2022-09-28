@@ -1,15 +1,31 @@
 import { createClient } from '@supabase/supabase-js'
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
-export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
-export const supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
-
 /* v2 RC supabase-js */
-export const setHeaders = (access_token) => {
-  supabaseServerClient.headers.Authorization = `Bearer ${access_token}`
-  supabaseServerClient.realtime.headers.Authorization = `Bearer ${access_token}`
-  supabaseServerClient.rest.headers.Authorization = `Bearer ${access_token}`
+export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+  options: {
+    auth: {
+      persistSession: false
+    }
+  }
+})
+
+export let supabaseServerClient = null
+export const createSupabaseServerClient = (access_token) => {
+  supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+    options: {
+      global: {
+        headers: { 'Authorization': `Bearer ${access_token}` }
+      }
+    }
+  })
 }
+
+/* v1 supabase-js */
+// export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+//   persistSession: false
+// })
+// export const supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
 export const signIn = async (provider) => {
   try {
@@ -31,8 +47,8 @@ export const signIn = async (provider) => {
     //   { redirectTo: 'http://localhost:5173/login' }
     // )
     if (error) console.error(error)
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    console.error(err)
   }
 }
 
@@ -40,7 +56,7 @@ export const signOut = async () => {
   try {
     const { error } = await supabaseClient.auth.signOut()
     if (error) console.error(error)
-  } catch (error) {
-    console.error(error)
+  } catch (err) {
+    console.error(err)
   }
 }

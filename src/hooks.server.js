@@ -1,4 +1,4 @@
-import { setHeaders, supabaseServerClient } from '$lib/supabase'
+import { supabaseServerClient, createSupabaseServerClient } from '$lib/supabase'
 import { get_cookies } from './utils/cookies'
 
 /*
@@ -7,12 +7,13 @@ import { get_cookies } from './utils/cookies'
 export const handle = async ({ event, resolve }) => {
   const cookies = get_cookies(event, ['tokens', 'user'])
 
-  /* set Authorization headers for server-side `supabaseServerClient` */
   if (cookies.tokens) {
-    /* v2 RC supabase-js client */
-    setHeaders(cookies.tokens.access_token)
+    /* set access token for server client */
 
-    /* v1 supabase-js client */
+    /* v2 RC supabase-js */
+    createSupabaseServerClient(cookies.tokens.access_token)
+
+    /* v1 supabase-js */
     //supabaseServerClient.auth.setSession(tokens.access_token)
   }
   
