@@ -6,7 +6,6 @@ import { json } from '@sveltejs/kit'
 export const POST = async ({ cookies, request }) => {
   const session = request.body ? await request.json() : null
   if (session) {
-    const expires = session.expires_at ? new Date(session.expires_at * 1000) : new Date(0)
     const { refresh_token, access_token } = session
     const user_data = JSON.stringify(
       {
@@ -16,7 +15,7 @@ export const POST = async ({ cookies, request }) => {
     )
 
     const options = {
-      expires,
+      maxAge: 7200,
       path: '/',
       sameSite: true
     }
