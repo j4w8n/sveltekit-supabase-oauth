@@ -13,10 +13,8 @@ export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_
 export let supabaseServerClient
 export const createSupabaseServerClient = (access_token) => {
   supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-    options: {
-      global: {
-        headers: { 'Authorization': `Bearer ${access_token}` }
-      }
+    global: {
+      headers: { 'Authorization': `Bearer ${access_token}` }
     }
   })
 }
