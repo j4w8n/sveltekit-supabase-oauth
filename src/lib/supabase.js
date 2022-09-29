@@ -10,7 +10,7 @@ export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_
   }
 })
 
-export let supabaseServerClient = null
+export let supabaseServerClient
 export const createSupabaseServerClient = (access_token) => {
   supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
     options: {
@@ -25,6 +25,7 @@ export const createSupabaseServerClient = (access_token) => {
 // export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
 //   persistSession: false
 // })
+//
 // export const supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
 export const signIn = async (provider) => {

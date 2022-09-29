@@ -21,6 +21,7 @@
   },
   "type": "module",
   "dependencies": {
-    "@supabase/supabase-js": "2.0.0-rc.10"
+    "@supabase/supabase-js": "2.0.0-rc.10",
+    "supakit": "^0.0.1"
   }
 }
