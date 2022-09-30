@@ -13,7 +13,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "next",
-    "@sveltejs/kit": "1.0.0-next.493",
+    "@sveltejs/kit": "1.0.0-next.505",
     "svelte": "^3.50.1",
     "svelte-check": "2.9.0",
     "typescript": "4.8.3",
@@ -21,7 +21,6 @@
   },
   "type": "module",
   "dependencies": {
-    "@supabase/supabase-js": "2.0.0-rc.10",
-    "supakit": "^0.0.1"
+    "@supabase/supabase-js": "2.0.0-rc.10"
   }
 }
