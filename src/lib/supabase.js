@@ -4,6 +4,7 @@ import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/publi
 /* v2 RC supabase-js */
 export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
   auth: {
+    autoRefreshToken: false,
     persistSession: false
   }
 })
@@ -13,12 +14,17 @@ export const createSupabaseServerClient = (access_token) => {
   supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
     global: {
       headers: { 'Authorization': `Bearer ${access_token}` }
+    },
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
     }
   })
 }
 
 /* v1 supabase-js */
 // export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+//   autoRefreshToken: false,
 //   persistSession: false
 // })
 //
