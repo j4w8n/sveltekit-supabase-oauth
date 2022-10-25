@@ -12,7 +12,7 @@ export const handle = async ({ event, resolve }) => {
   if (cookies['sb-access-token']) {
     /* set access token for server client */
 
-    /* v2 RC supabase-js */
+    /* v2 supabase-js */
     createSupabaseServerClient(cookies['sb-access-token'])
 
     /* v1 supabase-js */

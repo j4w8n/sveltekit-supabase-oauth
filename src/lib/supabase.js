@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js'
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
-/* v2 RC supabase-js */
+/* v2 supabase-js */
 export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
   auth: {
     autoRefreshToken: false,
@@ -38,7 +38,7 @@ export const signIn = async (provider) => {
     ** set redirectTo equal to your app's login page
     */
 
-    /* v2 RC supabase-js */
+    /* v2 supabase-js */
     const { error } = await supabaseClient.auth.signInWithOAuth(
       { provider, 
         options: { redirectTo: 'http://localhost:5173/login' }
