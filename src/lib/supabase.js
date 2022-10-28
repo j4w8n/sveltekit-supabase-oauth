@@ -2,22 +2,13 @@ import { createClient } from '@supabase/supabase-js'
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from '$env/static/public'
 
 /* v2 supabase-js */
-export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-  auth: {
-    autoRefreshToken: false,
-    persistSession: false
-  }
-})
+export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
 export let supabaseServerClient
 export const createSupabaseServerClient = (access_token) => {
   supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
     global: {
       headers: { 'Authorization': `Bearer ${access_token}` }
-    },
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false
     }
   })
 }

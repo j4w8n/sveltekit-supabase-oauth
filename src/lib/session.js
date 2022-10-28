@@ -29,7 +29,7 @@ export const handleSession = async (event, session, api) => {
   if (event === 'SIGNED_OUT') {
     await setCookie('DELETE')
   }
-  if (event === 'SIGNED_IN') {
+  if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
     await setCookie('POST', JSON.stringify(session))
   }
 }
