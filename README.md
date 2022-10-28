@@ -21,7 +21,6 @@ A ton of recent changes, including:
 - sets server-side supabase client authentication in `hooks.server.js`.
 - auth guards: server page requests are guarded by the `+layout.server.js` file under `/src/routes/(auth)`, client navigation is guarded by `+page.server.js` files in subdirectories.
 - for now, replaces the old $session store with a secure version. This is not the only method available, but I'm trying out something other than `invaldiateAll()`.
-- refreshes the supabase `access_token` whenever it has less than 120 seconds until expiry. This requires a server-side request. If the token expires, it'll still refresh on the next server request.
 
 ## Roadmap
 
