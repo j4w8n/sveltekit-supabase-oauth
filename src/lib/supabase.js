@@ -14,10 +14,7 @@ export const createSupabaseServerClient = (access_token) => {
 }
 
 /* v1 supabase-js */
-// export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
-//   autoRefreshToken: false,
-//   persistSession: false
-// })
+// export const supabaseClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 //
 // export const supabaseServerClient = createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
 
