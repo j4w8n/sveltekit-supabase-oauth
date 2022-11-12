@@ -3,6 +3,8 @@
   import { getSession, handleSession } from '$lib/session'
   import { supabaseClient, signOut } from '$lib/supabase'
   import { page } from '$app/stores'
+  import { dev } from '$app/environment'
+  import { PUBLIC_BASE_URL } from '$env/static/public'
   
   const { session } = getSession()
 
@@ -10,8 +12,10 @@
   $session = $page.data.user
 
   supabaseClient.auth.onAuthStateChange(async (event, seshun) => {
-    await handleSession(event, seshun, 'http://localhost:5173/api/cookie')
-    
+    console.log(event, seshun)
+    await handleSession(event, seshun, `${PUBLIC_BASE_URL}:${dev ? 5173 : 4173}/api/cookie`)
+    // console.log('client', supabaseClient)
+    // console.log('user', await supabaseClient.auth.getUser())
     if (event === 'SIGNED_OUT') {
       $session = null
       goto('/')
