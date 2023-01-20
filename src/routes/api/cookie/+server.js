@@ -1,5 +1,5 @@
 /* 
-** https://kit.svelte.dev/docs/web-standards#fetch-apis-request
+** https://kit.svelte.dev/docs/web-standards#fetch-apis
 */
 
 export const POST = async ({ cookies, request }) => {
