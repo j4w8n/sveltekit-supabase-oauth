@@ -12,7 +12,11 @@ export const handle = async ({ event, resolve }) => {
     createSupabaseServerClient(cookies['sb-access-token'])
   }
   
-  event.locals.user = cookies['sb-user']
+  event.locals.session = {
+    user: cookies['sb-user'],
+    access_token: cookies['sb-access-token'],
+    refresh_token: cookies['sb-refresh-token']
+  }
 
   const response = await resolve(event)
   return response
