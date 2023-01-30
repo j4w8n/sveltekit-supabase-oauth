@@ -26,7 +26,7 @@ export const signIn = async (provider) => {
     ** set redirectTo equal to your app's login page
     */
 
-    const { error } = await supabaseClient.auth.signInWithOAuth(
+    const { error } = await supabaseBrowserClient.auth.signInWithOAuth(
       { provider, 
         options: { redirectTo: `${PUBLIC_BASE_URL}:${dev ? 5173 : 4173}/login` }
       }
@@ -39,7 +39,7 @@ export const signIn = async (provider) => {
 
 export const signOut = async () => {
   try {
-    const { error } = await supabaseClient.auth.signOut()
+    const { error } = await supabaseBrowserClient.auth.signOut()
     if (error) console.error(error)
   } catch (err) {
     console.error(err)

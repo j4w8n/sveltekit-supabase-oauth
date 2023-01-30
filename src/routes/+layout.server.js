@@ -1,4 +1,4 @@
-export const load = async ({ locals }) => {
+export const load = ({ locals }) => {
   return {
     ...locals
   }

@@ -32,4 +32,5 @@ export const handleSession = async (event, session, api) => {
   if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
     await setCookie('POST', JSON.stringify(session))
   }
+  return true
 }

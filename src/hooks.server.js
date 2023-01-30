@@ -1,8 +1,5 @@
 import { createSupabaseServerClient } from '$lib/supabase'
 
-/*
-** https://kit.svelte.dev/docs/hooks#server-hooks
-*/
 export const handle = async ({ event, resolve }) => {
   const cookieList = ['sb-user','sb-access-token','sb-refresh-token']
   let cookies = {}

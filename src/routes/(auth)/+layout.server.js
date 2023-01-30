@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit'
-//import { supabaseServerClient } from '$lib/supabase'
+import { supabaseServerClient } from '$lib/supabase'
 
 export const load = async ({ locals }) => {
   if (!locals.user) throw redirect(307, '/login')

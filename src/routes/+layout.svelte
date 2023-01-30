@@ -11,15 +11,14 @@
   /* hydrate the store on data refresh */
   $session = $page.data.user
 
-  /* use `seshun` so we don't clash with our SvelteKit `session` name */
-  supabaseBrowserClient.auth.onAuthStateChange(async (event, seshun) => {
-    await handleSession(event, seshun, `${PUBLIC_BASE_URL}:${dev ? 5173 : 4173}/api/cookie`)
+  supabaseBrowserClient.auth.onAuthStateChange(async (event, supabaseSession) => {
+    await handleSession(event, supabaseSession, `${PUBLIC_BASE_URL}:${dev ? 5173 : 4173}/api/cookie`)
     if (event === 'SIGNED_OUT') {
       $session = null
       goto('/')
     }
     if (event === 'SIGNED_IN') {
-      $session = seshun.user
+      $session = supabaseSession.user
       goto('/app')
     }
   })
