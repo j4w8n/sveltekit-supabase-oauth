@@ -4,8 +4,8 @@ A demo of Supabase OAuth with SvelteKit.
 
 ## Tech
 
-SvelteKit ^1.0
-Supabase ^2.0.0
+- SvelteKit ^1.0
+- Supabase ^2.0.0
 
 ## Notable Features
 
