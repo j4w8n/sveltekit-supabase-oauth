@@ -1,3 +1,5 @@
+Archiving. See updated version at https://github.com/j4w8n/sveltekit-supabase-ssr
+
 # sveltekit + supabase oauth
 
 A demo of Supabase OAuth with SvelteKit.
